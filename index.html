@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="album design.css">
+</head>
+
+<body class="login-body" oncontextmenu="return false;">
+  <div class="login-page">
+    <div class="login-box">
+      <h1 class="sign">Login</h1>
+
+      <input type="password" id="password" placeholder="Enter password" />
+      <button id="loginBtn" onclick="login()">Log In</button>
+
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+
+<script>
+  const CORRECT_PASSWORD = "12031972";
+  const MAX_ATTEMPTS = 5;
+  const LOCK_TIME = 5 * 60 * 1000; 
+
+  let attempts = MAX_ATTEMPTS;
+  let lockUntil = null;
+  
+  function login() {
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("message");
+    const loginBtn = document.getElementById("loginBtn");
+    const now = Date.now();
+
+    if (lockUntil && now < lockUntil) {
+      const remaining = Math.ceil((lockUntil - now) / 1000);
+      message.style.color = "red";
+      message.textContent = `Too many attempts. Try again in ${formatTime(remaining)}.`;
+      return;
+    }
+
+    if (lockUntil && now >= lockUntil) {
+      attempts = MAX_ATTEMPTS;
+      lockUntil = null;
+      loginBtn.disabled = false;
+    }
+
+    if (passwordInput.value === CORRECT_PASSWORD) {
+      window.location.href = "Album.html";
+    } else {
+      attempts--;
+
+      if (attempts > 0) {
+        message.style.color = "red";
+        message.textContent = `Invalid password. ${attempts} attempt(s) remaining.`;
+      } else {
+        lockUntil = Date.now() + LOCK_TIME;
+        loginBtn.disabled = true;
+        startCountdown();
+      }
+    }
+
+    passwordInput.value = "";
+  }
+
+  function startCountdown() {
+    const message = document.getElementById("message");
+    const loginBtn = document.getElementById("loginBtn");
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const remaining = Math.ceil((lockUntil - now) / 1000);
+
+      if (remaining <= 0) {
+        clearInterval(interval);
+        attempts = MAX_ATTEMPTS;
+        lockUntil = null;
+        loginBtn.disabled = false;
+        message.style.color = "green";
+        message.textContent = "You can try again.";
+      } else {
+        message.style.color = "red";
+        message.textContent = `Too many attempts. Try again in ${formatTime(remaining)}.`;
+      }
+    }, 1000);
+  }
+
+  function formatTime(seconds) {
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    return `${min}:${sec.toString().padStart(2, '0')}`;
+  }
+</script>
+
+</body>
+</html>
