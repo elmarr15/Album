@@ -10,6 +10,12 @@
 <body class="login-body" oncontextmenu="return false;">
   <div class="login-page">
     <div class="login-box">
+
+      <!-- Avatar -->
+      <div class="avatar">
+        <img id="avatarImg" src="LogImg/Neutral.png" alt="Profile">
+      </div>
+      
       <h1 class="sign">Login</h1>
 
       <input type="password" id="password" placeholder="Enter password" />
@@ -26,6 +32,18 @@
 
   let attempts = MAX_ATTEMPTS;
   let lockUntil = null;
+
+  const avatar = document.getElementById("avatarImg");
+  const passwordField = document.getElementById("password");
+
+  
+  passwordField.addEventListener("input", function () {
+    if (this.value.length > 0) {
+      avatar.src = "LogImg/cover.png";
+    } else {
+      avatar.src = "LogImg/Neutral.png";
+    }
+  });
   
   function login() {
     const passwordInput = document.getElementById("password");
@@ -52,8 +70,21 @@
       attempts--;
 
       if (attempts > 0) {
+
+        avatar.src = "LogImg/xhand.png";
+
         message.style.color = "red";
         message.textContent = `Invalid password. ${attempts} attempt(s) remaining.`;
+
+      
+        setTimeout(() => {
+          if (passwordField.value.length > 0) {
+            avatar.src = "LogImg/cover.png";
+          } else {
+            avatar.src = "LogImg/Neutral.png";
+          }
+        }, 2000);
+
       } else {
         lockUntil = Date.now() + LOCK_TIME;
         loginBtn.disabled = true;
@@ -79,6 +110,7 @@
         loginBtn.disabled = false;
         message.style.color = "green";
         message.textContent = "You can try again.";
+        avatar.src = "neutral.png";
       } else {
         message.style.color = "red";
         message.textContent = `Too many attempts. Try again in ${formatTime(remaining)}.`;
