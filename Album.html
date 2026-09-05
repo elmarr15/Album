@@ -6,88 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Picture Album</title>
     <link rel="stylesheet" href="album design.css">
-    <style>
-        /* =========================
-           NOTIFICATION MODAL STYLES
-        ========================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-box {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-box {
-            transform: translateY(0);
-        }
-
-        .modal-box h3 {
-            margin-top: 0;
-            color: #253850;
-            font-size: 20px;
-        }
-
-        .modal-box p {
-            color: #555555;
-            font-style: italic;
-            line-height: 1.6;
-            margin: 20px 0;
-            font-size: 16px;
-        }
-
-        .modal-box button {
-            background-color: #ff7a59;
-            color: #ffffff;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .modal-box button:hover {
-            background-color: #e66242;
-        }
-    </style>
 </head>
 
 <body>
-
-    <!-- SYSTEM NOTIFICATION MODAL -->
-    <div class="modal-overlay" id="prayerModal">
-        <div class="modal-box">
-           
-            <p>"Grant me, Oh Lord, a steady hand and a watchful eye so that no one shall be hurt as I pass by."</p>
-            <button id="closeModalBtn">Amen</button>
-        </div>
-    </div>
 
     <!-- TOP HEADER WITH HAMBURGER MENU -->
     <header class="app-header">
@@ -122,19 +43,6 @@
             window.location.replace("index.html");
         }
 
-        // System Notification Modal Logic (First Login Check)
-        const prayerModal = document.getElementById("prayerModal");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-
-        if (!sessionStorage.getItem("prayerShown")) {
-            prayerModal.classList.add("active");
-        }
-
-        closeModalBtn.addEventListener("click", () => {
-            prayerModal.classList.remove("active");
-            sessionStorage.setItem("prayerShown", "true");
-        });
-
         // Toggle Hamburger Menu
         const menuToggle = document.getElementById("menuToggle");
         const dropdownMenu = document.getElementById("dropdownMenu");
@@ -155,7 +63,6 @@
         document.getElementById("logoutBtn").addEventListener("click", (e) => {
             e.preventDefault();
             sessionStorage.removeItem("authenticated");
-            sessionStorage.removeItem("prayerShown"); // Resets prayer status on logout
             window.location.replace("index.html");
         });
 
