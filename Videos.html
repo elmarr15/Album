@@ -1,135 +1,180 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Video Album</title>
-	<link rel="stylesheet" href="album design.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Video Album</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="album design.css">
 </head>
-<body oncontextmenu="return false;">
-	<div class="header">
-	    <div class="header-inner">
-	    
-		    <div class="header-title">
-		      <h3>VIDEO<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALBUM</span></h3>
-		    </div>
 
-		    <div class="header-name">
-		      <div class="name"><h2>RAMIL M. DELA CRUZ</h2></div>
-		      <div class="header-accent"></div>
-		    </div>
+<body>
 
-	     </div>
-	</div>
-	
-	<nav class="nav">
-		<a href="Album.html" class="nav-link">Pictures</a>
-		<a href="Videos.html" class="nav-link active">Videos</a>
-	</nav>
+    <!-- =========================
+         HEADER & HAMBURGER MENU
+    ========================== -->
 
-	<div class="Acontainer">
-		<div class="Agrid">
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v1.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v1.mp4" download="Videos/v1.mp4"><button class="dl">DOWNLOAD</button> </a>	
-			</div>
+    <header class="app-header">
 
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v2.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v2.mp4" download="Videos/v2.mp4"><button class="dl">DOWNLOAD</button></a>
-				 
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v3.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v3.mp4" download="Videos/v3.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v4.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v4.mp4" download="Videos/v4.mp4"><button class="dl">DOWNLOAD</button> </a>
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v6.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v6.mp4" download="Videos/v6.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v7.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v7.mp4" download="Videos/v7.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v8.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v8.mp4" download="Videos/v8.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v9.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v9.mp4" download="Videos/v9.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v10.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v10.mp4" download="Videos/v10.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v11.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v11.mp4" download="Videos/v11.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v12.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v12.mp4" download="Videos/v12.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v13.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v13.mp4" download="Videos/v13.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v14.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v14.mp4" download="Videos/v14.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-			<div class="photos"> 
-				<div class="frame">
-					<video src="Videos/v15.mp4" controls width="260"></video>
-				</div>
-				<a href="Videos/v15.mp4" download="Videos/v15.mp4"><button class="dl">DOWNLOAD</button> </a>
-				
-			</div>
-		</div>
-	</div>
+        <div class="menu-container">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="Album.html" class="menu-item">Pictures</a>
+                <a href="Videos.html" class="menu-item active">Videos</a>
+                <a href="#" class="menu-item logout" id="logoutBtn">Logout</a>
+            </nav>
+        </div>
+
+        <div class="header-title-container">
+            <h1 class="main-title">MEMORABLE MOMENTS</h1>
+            <div class="title-underline"></div>
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         VIDEO ALBUM
+    ========================== -->
+
+    <div class="Acontainer">
+
+        <div class="Agrid" id="VideoGrid"></div>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        /* =========================
+           REQUIRE LOGIN
+        ========================== */
+
+        if (sessionStorage.getItem("authenticated") !== "true") {
+            window.location.replace("index.html");
+        }
+
+
+        /* =========================
+           HAMBURGER MENU TOGGLE
+        ========================== */
+
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        hamburgerBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle("show");
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!dropdownMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                dropdownMenu.classList.remove("show");
+            }
+        });
+
+        // Handle Logout
+        document.getElementById("logoutBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem("authenticated");
+            window.location.replace("index.html");
+        });
+
+
+        /* =========================
+           GENERATE VIDEOS
+        ========================== */
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const grid = document.getElementById("VideoGrid");
+
+            /*
+             * Change this number to match
+             * the number of videos you have.
+             */
+            const numberOfVideos = 15;
+
+            for (let i = 1; i <= numberOfVideos; i++) {
+
+                const item = document.createElement("div");
+                item.className = "photos";
+
+                /* =========================
+                   VIDEO ELEMENT
+                ========================== */
+
+                item.innerHTML = `
+                    <div class="frame">
+                        <video controls preload="metadata">
+                            <source src="Videos/${i}.mp4" type="video/mp4">
+                            Your browser does not support video.
+                        </video>
+                    </div>
+                    <button class="dl">
+                        DOWNLOAD
+                    </button>
+                `;
+
+                /* =========================
+                   DOWNLOAD FUNCTIONALITY
+                ========================== */
+
+                item.querySelector(".dl").onclick = async () => {
+
+                    try {
+                        const video = item.querySelector("video");
+                        const source = video.querySelector("source").src;
+                        const response = await fetch(source);
+
+                        if (!response.ok) {
+                            throw new Error("Video could not be downloaded.");
+                        }
+
+                        const blob = await response.blob();
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+
+                        link.href = url;
+                        link.download = `Videos-${i}.mp4`;
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                        URL.revokeObjectURL(url);
+
+                    } catch (error) {
+                        console.error("Download failed:", error);
+
+                        // Fallback if fetch is blocked
+                        const video = item.querySelector("video");
+                        const source = video.querySelector("source").src;
+                        window.open(source, "_blank");
+                    }
+                };
+
+                /* =========================
+                   ADD VIDEO TO GRID
+                ========================== */
+
+                grid.appendChild(item);
+            }
+
+        });
+
+    </script>
 
 </body>
-
 </html>
