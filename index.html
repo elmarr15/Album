@@ -1,128 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <link rel="stylesheet" href="album design.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="album design.css">
 </head>
 
 <body class="login-body" oncontextmenu="return false;">
-  <div class="login-page">
-    <div class="login-box">
 
-      <!-- Avatar -->
-      <div class="avatar">
-        <img id="avatarImg" src="LogImg/Neutral.png" alt="Profile">
-      </div>
-      
-      <h1 class="sign">Login</h1>
+    <div class="login-page">
 
-      <input type="password" id="password" placeholder="Enter password" />
-      <button id="loginBtn" onclick="login()">Log In</button>
+        <div class="login-box">
 
-      <div class="message" id="message"></div>
+            <div class="avatar">
+                <img
+                    id="avatarImg"
+                    src="LogImg/2neutral.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <h1 class="sign">Login</h1>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="off"
+            />
+
+            <button id="loginBtn" onclick="login()">
+                Log In
+            </button>
+
+            <div class="message" id="message"></div>
+
+        </div>
+
     </div>
-  </div>
+
 
 <script>
-  const CORRECT_PASSWORD = "12031972";
-  const MAX_ATTEMPTS = 5;
-  const LOCK_TIME = 5 * 60 * 1000; 
+    // CONFIGURATION
 
-  let attempts = MAX_ATTEMPTS;
-  let lockUntil = null;
+    const CORRECT_PASSWORD = "12031972";
+    const MAX_ATTEMPTS = 5;
+    const LOCK_TIME = 5 * 60 * 1000;
 
-  const avatar = document.getElementById("avatarImg");
-  const passwordField = document.getElementById("password");
+    // STORAGE
 
-  
-  passwordField.addEventListener("input", function () {
-    if (this.value.length > 0) {
-      avatar.src = "LogImg/cover.png";
-    } else {
-      avatar.src = "LogImg/Neutral.png";
-    }
-  });
-  
-  function login() {
-    const passwordInput = document.getElementById("password");
-    const message = document.getElementById("message");
-    const loginBtn = document.getElementById("loginBtn");
-    const now = Date.now();
+    const STORAGE = {
+        attempts: "loginAttempts",
+        lockUntil: "loginLockUntil"
+    };
 
-    if (lockUntil && now < lockUntil) {
-      const remaining = Math.ceil((lockUntil - now) / 1000);
-      message.style.color = "red";
-      message.textContent = `Too many attempts. Try again in ${formatTime(remaining)}.`;
-      return;
-    }
+    const SESSION = {
+        authenticated: "authenticated"
+    };
 
-    if (lockUntil && now >= lockUntil) {
-      attempts = MAX_ATTEMPTS;
-      lockUntil = null;
-      loginBtn.disabled = false;
-    }
+    // ELEMENTS
 
-    if (passwordInput.value === CORRECT_PASSWORD) {
-      window.location.href = "Album.html";
-    } else {
-      attempts--;
-
-      if (attempts > 0) {
-
-        avatar.src = "LogImg/xhand.png";
-
-        message.style.color = "red";
-        message.textContent = `Invalid password. ${attempts} attempt(s) remaining.`;
-
-      
-        setTimeout(() => {
-          if (passwordField.value.length > 0) {
-            avatar.src = "LogImg/cover.png";
-          } else {
-            avatar.src = "LogImg/Neutral.png";
-          }
-        }, 2000);
-
-      } else {
-        lockUntil = Date.now() + LOCK_TIME;
-        loginBtn.disabled = true;
-        startCountdown();
-      }
-    }
-
-    passwordInput.value = "";
-  }
-
-  function startCountdown() {
+    const avatar = document.getElementById("avatarImg");
+    const passwordField = document.getElementById("password");
     const message = document.getElementById("message");
     const loginBtn = document.getElementById("loginBtn");
 
-    const interval = setInterval(() => {
-      const now = Date.now();
-      const remaining = Math.ceil((lockUntil - now) / 1000);
+    // CHECK IF ALREADY LOGGED IN
+    if (
+        sessionStorage.getItem(SESSION.authenticated) === "true"
+    ) {
 
-      if (remaining <= 0) {
-        clearInterval(interval);
+        window.location.replace("Album.html");
+    }
+
+    // LOAD SAVED ATTEMPTS
+    let attempts = parseInt(
+        localStorage.getItem(STORAGE.attempts)
+    );
+
+
+    if (isNaN(attempts)) {
+
         attempts = MAX_ATTEMPTS;
-        lockUntil = null;
-        loginBtn.disabled = false;
-        message.style.color = "green";
-        message.textContent = "You can try again.";
-        avatar.src = "neutral.png";
-      } else {
-        message.style.color = "red";
-        message.textContent = `Too many attempts. Try again in ${formatTime(remaining)}.`;
-      }
-    }, 1000);
-  }
 
-  function formatTime(seconds) {
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
-    return `${min}:${sec.toString().padStart(2, '0')}`;
-  }
+        localStorage.setItem(
+            STORAGE.attempts,
+            attempts
+        );
+
+    }
+
+    // LOAD SAVED LOCK TIME
+    let lockUntil = parseInt(
+        localStorage.getItem(STORAGE.lockUntil)
+    );
+
+
+    if (isNaN(lockUntil)) {
+
+        lockUntil = null;
+
+    }
+
+    // AVATAR WHEN TYPING
+    passwordField.addEventListener("input", function () {
+
+        if (this.value.length > 0) {
+
+            avatar.src = "LogImg/2cover.png";
+
+        } else {
+
+            avatar.src = "LogImg/2neutral.png";
+
+        }
+
+    });
+
+    // CHECK LOCK WHEN PAGE LOADS
+    checkLockStatus();
+
+    // LOGIN FUNCTION
+    function login() {
+        const passwordInput =
+            document.getElementById("password");
+
+        const now = Date.now();
+        // CHECK IF CURRENTLY LOCKED
+        if (lockUntil && now < lockUntil) {
+            const remaining =
+                Math.ceil((lockUntil - now) / 1000);
+
+            loginBtn.disabled = true;
+            message.style.color = "red";
+            message.textContent =
+                `Too many attempts. Try again in ${formatTime(remaining)}.`;
+
+            startCountdown();
+
+            return;
+
+        }
+
+        // LOCK HAS EXPIRED
+        if (lockUntil && now >= lockUntil) {
+            attempts = MAX_ATTEMPTS;
+            lockUntil = null;
+
+            localStorage.setItem(
+                STORAGE.attempts,
+                attempts
+            );
+
+            localStorage.removeItem(
+                STORAGE.lockUntil
+            );
+
+
+            loginBtn.disabled = false;
+
+        }
+
+        // CORRECT PASSWORD
+        if (passwordInput.value === CORRECT_PASSWORD) {
+
+            // Create login session
+            sessionStorage.setItem(
+                SESSION.authenticated,
+                "true"
+            );
+
+
+            // Reset failed attempts
+            localStorage.removeItem(
+                STORAGE.attempts
+            );
+
+            localStorage.removeItem(
+                STORAGE.lockUntil
+            );
+
+            // Redirect to Album
+            window.location.replace("Album.html");
+            return;
+        }
+
+        // WRONG PASSWORD
+        attempts--;
+
+        // Save attempts
+        localStorage.setItem(
+            STORAGE.attempts,
+            attempts
+        );
+
+        // ATTEMPTS REMAINING
+        if (attempts > 0) {
+            avatar.src = "LogImg/xhand.png";
+            message.style.color = "red";
+            message.textContent =
+                `Invalid password. ${attempts} attempt(s) remaining.`;
+
+            // Return avatar after 2 seconds
+            setTimeout(() => {
+
+                if (passwordField.value.length > 0) {
+                    avatar.src = "LogImg/2cover.png";
+                } else {
+                    avatar.src = "LogImg/2neutral.png";
+                }
+
+            }, 2000);
+
+        }
+
+        // NO ATTEMPTS LEFT
+        else {
+
+            lockUntil =
+                Date.now() + LOCK_TIME;
+
+            // Save lock time
+            localStorage.setItem(
+                STORAGE.lockUntil,
+                lockUntil
+            );
+
+            loginBtn.disabled = true;
+            startCountdown();
+        }
+
+
+        // Clear password
+        passwordInput.value = "";
+
+        avatar.src = "LogImg/Neutral.png";
+
+    }
+
+    // CHECK LOCK STATUS
+    function checkLockStatus() {
+        const now = Date.now();
+        // STILL LOCKED
+        if (lockUntil && now < lockUntil) {
+
+            loginBtn.disabled = true;
+            startCountdown();
+            return;
+        }
+
+        // LOCK EXPIRED
+        if (lockUntil && now >= lockUntil) {
+
+            attempts = MAX_ATTEMPTS;
+            lockUntil = null;
+
+            localStorage.setItem(
+                STORAGE.attempts,
+                attempts
+            );
+
+            localStorage.removeItem(
+                STORAGE.lockUntil
+            );
+
+
+            loginBtn.disabled = false;
+
+            message.style.color = "green";
+            message.textContent =
+                "You can try again.";
+            avatar.src = "LogImg/Neutral.png";
+        }
+
+        // SAFETY CHECK
+        if (attempts <= 0 && !lockUntil) {
+
+            attempts = MAX_ATTEMPTS;
+            localStorage.setItem(
+                STORAGE.attempts,
+                attempts
+            );
+
+        }
+
+    }
+
+    // COUNTDOWN
+    let countdownInterval = null;
+
+    function startCountdown() {
+
+        // Prevent duplicate intervals
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
+
+
+        countdownInterval = setInterval(() => {
+
+            const now = Date.now();
+            // LOCK EXPIRED
+            if (!lockUntil || now >= lockUntil) {
+
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+
+                attempts = MAX_ATTEMPTS;
+                lockUntil = null;
+                localStorage.setItem(
+                    STORAGE.attempts,
+                    attempts
+                );
+
+                localStorage.removeItem(
+                    STORAGE.lockUntil
+                );
+
+                loginBtn.disabled = false;
+                message.style.color = "green";
+                message.textContent =
+                    "You can try again.";
+
+
+                avatar.src = "LogImg/Neutral.png";
+                return;
+            }
+
+            // STILL LOCKED
+            const remaining =
+                Math.ceil((lockUntil - now) / 1000);
+
+
+            loginBtn.disabled = true;
+
+
+            message.style.color = "red";
+
+            message.textContent =
+                `Too many attempts. Try again in ${formatTime(remaining)}.`;
+
+        }, 1000);
+
+    }
+
+    // FORMAT TIME
+    function formatTime(seconds) {
+
+        const min = Math.floor(seconds / 60);
+
+        const sec = seconds % 60;
+
+
+        return `${min}:${sec
+            .toString()
+            .padStart(2, "0")}`;
+
+    }
+
 </script>
 
 </body>
